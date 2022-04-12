@@ -1,0 +1,28 @@
+
+macro(add_saturn_executable TARGET_EXE SRC LINKER)
+    
+SET(CMAKE_FIND_ROOT_PATH /usr/local/share/sh-elf/bin)
+
+    add_executable(${TARGET_EXE} ${SRC})
+    target_link_options(${TARGET_EXE} PRIVATE -T${LINKER})
+    target_link_libraries(${TARGET_EXE} ${IAPETUS_LIB} )
+    target_include_directories(${TARGET_EXE} PRIVATE ${CMAKE_BINARY_DIR})
+
+    add_custom_command(TARGET ${TARGET_EXE}
+        POST_BUILD
+        DEPENDS ${TARGET_EXE}
+        COMMAND ${CMAKE_OBJCOPY}  --output-format=binary ${TARGET_EXE} ${CMAKE_BINARY_DIR}/${TARGET_EXE}.bin
+        COMMENT "Generating bin file ${TARGET_EXE}.bin" )
+
+    add_custom_command(TARGET ${TARGET_EXE}
+        POST_BUILD
+        DEPENDS ${TARGET_EXE}
+        COMMAND ${CMAKE_OBJDUMP}  -x ${TARGET_EXE} > ${CMAKE_BINARY_DIR}/${TARGET_EXE}.map
+        COMMENT "Generating map file ${TARGET_EXE}.map" )
+
+    add_custom_command(TARGET ${TARGET_EXE}
+        POST_BUILD
+        DEPENDS ${TARGET_EXE}
+        COMMAND ${CMAKE_OBJDUMP} -d ${TARGET_EXE} > ${CMAKE_BINARY_DIR}/${TARGET_EXE}.s
+        COMMENT "Generating asm ${TARGET_EXE}.s" )
+endmacro()
