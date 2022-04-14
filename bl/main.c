@@ -1,7 +1,7 @@
 #include "bootanim.h"
 #include "fastlz/fastlz.h"
 #include <stdint.h>
-#define BOOTANIM_ADDR (0x06007000)
+#define BOOTANIM_ADDR (0x06010000)
 #define ERR_PTR (BOOTANIM_ADDR - 0x20)
 
 void interrupt_set_level_mask(uint32_t imask)

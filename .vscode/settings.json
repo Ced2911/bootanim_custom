@@ -53,6 +53,7 @@
         "typeinfo": "c",
         "vdp1.h": "c",
         "browser.C": "cpp",
-        "bootanim.h": "c"
+        "bootanim.h": "c",
+        "vdpregs.h": "c"
     }
 }

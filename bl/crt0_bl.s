@@ -39,7 +39,7 @@ end:
     nop
 .align 2
 start_ptr:  .long start
-stack_ptr:  .long 0x06002000 
+stack_ptr:  .long 0x06010000 
 bss_start:  .long __bss_start
 bss_end:    .long __bss_end
 main_ptr:   .long _main

@@ -5,6 +5,7 @@ enable_language(ASM)
 set(BOOT_ANIM_SHARED
 	${CMAKE_CURRENT_SOURCE_DIR}/crt0_bios.s
 	${CMAKE_CURRENT_SOURCE_DIR}/main.c
+	${CMAKE_CURRENT_SOURCE_DIR}/boot.c
 )
 
 set(BOOT_ANIM_CARD

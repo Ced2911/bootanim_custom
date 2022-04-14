@@ -2,9 +2,10 @@ OUTPUT_FORMAT("elf32-sh")
 
 SECTIONS
 {
-    . = 0x06004000;
+    . = 0x06010000;
     .text : { 
         *(.ctr0_text) 
+        *(.text.main)
         *(.text)     
     }
     .tors : {
