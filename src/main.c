@@ -1,5 +1,6 @@
 #include <iapetus.h>
 #include <string.h>
+#include "bios_cd.h"
 #include "vdpregs.h"
 #include "sega.h"
 
@@ -91,15 +92,15 @@ void CopyTilemap(const uint8_t *tilemap, size_t plan, uint8_t x, uint8_t y, size
 #define SPEED_T(x) (x >> 0)
 
 static uint16_t bootanim_finished = 0;
+static uint16_t time = 0;
 
 void sega_logo_vblank_interrupt()
 {
-    static uint16_t time = 0;
     volatile uint16_t *cram = (volatile uint16_t *)VDP2_CRAM;
     per_handler();
     if (SPEED_T(time) > 48)
     {
-        int s = SPEED_T(time) - 48;
+        int s = (SPEED_T(time) - 48) >> 2;
         int pal_offset = s * 6;
         if (pal_offset > 18)
             pal_offset = 18;
@@ -177,6 +178,7 @@ void sega_logo_init()
     }
 
     bootanim_finished = 0;
+    time = 0;
 
     uint32_t mask = interrupt_get_level_mask();
     interrupt_set_level_mask(0xF);
@@ -299,7 +301,7 @@ int main()
     int card_present = -1;
 
     card_present = card_load();
-    if (card_load != 0)
+    if (card_present != 0 && bios_cd_is_present())
     {
         cd_present = cd_load();
     }
@@ -312,11 +314,11 @@ int main()
     {
 
         if (card_present == 0)
-            card_boot(); // not working
+            card_boot();
         else if (cd_present == 0)
             cd_boot();
-        else
-            bios_run_cd_player(); // not working
+        // failed to boot card or cd
+        bios_run_cd_player();
     }
     return 0;
 }
