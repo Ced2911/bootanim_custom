@@ -60,11 +60,11 @@ int card_boot()
 
 int cd_load()
 {
-    // check if cd prsent...
-    bios_loadcd_init(); // 1904
-    bios_loadcd_read(); // 1912
-
-    return 0;
+    int init = bios_loadcd_init(); // 1904
+    if (init != 0)
+        return init;
+    int read = bios_loadcd_read(); // 1912
+    return read;
 }
 
 int cd_boot()
